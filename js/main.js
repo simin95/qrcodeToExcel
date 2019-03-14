@@ -3,8 +3,8 @@ var v = null;
 var gCtx = null;
 // 缓存每次的二维码信息
 let tempString = '';
-// 缓存表格
-let list = ['hello','world'];
+// 缓存表格 [{code:123, msg:233}]
+let list = [];
 
 // 获取dom
 let allList = $('#allList');
@@ -14,14 +14,22 @@ let tempResult = $('#result');
 // 刷新list表格显示方法
 function refreshList(list) {
   let nodeArr = list.map((v, i) => {
-    return `<p><span> ${i}. ${v} </span> <button class="delete-item" data-index="${i}" onclick="deleteByIndex(event)">删除</button></p>`;
+    // return `<p><span> ${i}. ${v} </span> <button class="delete-item" data-index="${i}" onclick="deleteByIndex(event)">删除</button></p>`;
+    return `<tr>
+              <td class="table-num">${i}</td>
+              <td class="table-code">${v.code!==undefined?v.code:''}</td>
+              <td><input class="table-msg" data-index="${i}" onblur="addMessage(event)" value="${v.msg!==undefined?v.msg:''}"></td>
+              <td class="table-func"><button class="delete-item" data-index="${i}" onclick="deleteByIndex(event)">删除</button></td>
+            </tr>`
   });
-  allList.html(nodeArr.join(''));
+  // 自定义表头
+  let tableHead = `<tr><th>序号</th><th>二维码信息</th><th>备注信息</th><th>操作</th></tr>`
+  allList.html(tableHead + nodeArr.join(''));
 }
 // list表格清空方法
 function emptyList() {
   list = [];
-  allList.html('');
+  refreshList(list)
 }
 // tempResult清空方法
 function emptyTempResult() {
@@ -29,10 +37,15 @@ function emptyTempResult() {
 }
 // 正确的保存方法，并清空，错误直接清空
 function confirm(isSave) {
-  let msg = tempResult.text();
-  if (isSave) list.push(msg);
+  let qrcodeResult = tempResult.text();
+  if (isSave) list.push({code:qrcodeResult,msg:''});
   emptyTempResult();
   refreshList(list);
+}
+// 处理添加备注的情况，以输入框失去焦点为触发条件
+function addMessage(e) {
+  let index = e.target.getAttribute('data-index');
+  list[index].msg = e.target.value;
 }
 // 单独删除某条信息
 function deleteByIndex(e) {
@@ -45,9 +58,9 @@ function deleteByIndex(e) {
 function createExcel() {
   // 组装用于生成sheet的数组
   // 定义表头
-  var tab = ['序列号', '二维码信息']
+  var tab = [['序号', '二维码信息','备注信息']]
   var excelArr = list.map((v,i) => {
-    return new Array(i,v)
+    return new Array(i, v.code, v.msg)
   })
   // var aoa = [
   //   ['主要信息', null, null, '其它信息'], // 特别注意合并的地方后面预留2个null
@@ -113,16 +126,17 @@ function captureToCanvas() {
     gCtx.drawImage(v, 0, 0); //在canvas元素中绘出video的某一帧
     try {
       qrcode.decode(); //扫描二维码
+      setTimeout(captureToCanvas, 1000); //500ms之后再重绘canvas
       //console.log(qrcode.decode());//扫描成功输出二维码的信息
-      document.getElementById('loading').style.display = 'none'; //隐藏掉加载动画
+      // document.getElementById('loading').style.display = 'none'; //隐藏掉加载动画
     } catch (e) {
       console.log(e); //未扫描出二维码，输出错误信息
-      setTimeout(captureToCanvas, 500); //500ms之后再重绘canvas
-      document.getElementById('loading').style.display = 'block';
+      setTimeout(captureToCanvas, 1000); //500ms之后再重绘canvas
+      // document.getElementById('loading').style.display = 'block';
     }
   } catch (e) {
     console.log(e); //若失败，输出错误信息
-    setTimeout(captureToCanvas, 500); //500ms再重绘canvas
+    setTimeout(captureToCanvas, 1000); //500ms再重绘canvas
   }
 }
 //初始化canvas元素，形成一个矩形框
@@ -169,11 +183,11 @@ function setwebcam() {
 function setwebcam2(options) {
   var p = n.mediaDevices.getUserMedia({ video: options, audio: false });
   p.then(success, error);
-  //  setTimeout(captureToCanvas, 500);
+  // setTimeout(captureToCanvas, 1000);
 }
 function success(stream) {
   v.srcObject = stream;
-  setTimeout(captureToCanvas(), 500);
+  setTimeout(captureToCanvas(), 1000);
 }
 function error(error) {
   console.log(error);
@@ -190,6 +204,3 @@ function read(a) {
 
 // 开始执行
 load();
-
-// 测试
-refreshList(list);

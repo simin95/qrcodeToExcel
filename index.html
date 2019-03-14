@@ -41,9 +41,19 @@
         <button onclick="confirm(false)" class="confirm_no">错误，再扫一次</button>
       </div>
 
+<!-- <p id="test" style="word-break: break-all;height:5rem;overflow:auto"></p> -->
+
       <div class="output">
         <p>已扫描的信息：</p>
-        <div id="allList"></div>
+        <table id="allList" border="1">
+          <tr>
+            <th class="table-num">序号</th>
+            <th class="table-code">二维码信息</th>
+            <th class="table-msg">备注信息</th>
+            <th class="table-func">操作</th>
+          </tr>
+        </table>
+        <!-- <div id="allList"></div> -->
       </div>
       <div class="func-btn-list">
         <button class="func-btn" onclick="emptyList()">清空列表</button>
