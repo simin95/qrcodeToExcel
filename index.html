@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <script
+      type="text/javascript"
+      src="https://cdn.bootcss.com/jquery/2.0.0/jquery.js"
+    ></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <title>scan-code</title>
+
+  </head>
+
+  <body>
+    <div class="total">
+      <!-- 扫码区域 -->
+      <div id="outdiv" class="scanning_frame">
+        <video id="v" autoplay></video>
+        <canvas id="qr-canvas"></canvas>
+
+        <!--加载动画-->
+        <!-- <div class="spinner" id="loading">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div> -->
+      </div>
+      <div class="infor">请扫描二维码</div>
+      <!-- 展示扫码结果 -->
+      <div>
+        <p id="result" class="result"></p>
+      </div>
+      <div class="confim">
+        <button onclick="confirm(true)" class="confirm_ok">正确，暂时保存</button>
+        <button onclick="confirm(false)" class="confirm_no">错误，再扫一次</button>
+      </div>
+
+      <div class="output">
+        <p>已扫描的信息：</p>
+        <div id="allList"></div>
+      </div>
+      <div class="func-btn-list">
+        <button class="func-btn" onclick="emptyList()">清空列表</button>
+        <button class="func-btn" onclick="createExcel()">生成excel表格</button>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/qrcode/grid.js"></script>
+    <script type="text/javascript" src="js/qrcode/version.js"></script>
+    <script type="text/javascript" src="js/qrcode/detector.js"></script>
+    <script type="text/javascript" src="js/qrcode/formatinf.js"></script>
+    <script type="text/javascript" src="js/qrcode/errorlevel.js"></script>
+    <script type="text/javascript" src="js/qrcode/bitmat.js"></script>
+    <script type="text/javascript" src="js/qrcode/datablock.js"></script>
+    <script type="text/javascript" src="js/qrcode/bmparser.js"></script>
+    <script type="text/javascript" src="js/qrcode/datamask.js"></script>
+    <script type="text/javascript" src="js/qrcode/rsdecoder.js"></script>
+    <script type="text/javascript" src="js/qrcode/gf256poly.js"></script>
+    <script type="text/javascript" src="js/qrcode/gf256.js"></script>
+    <script type="text/javascript" src="js/qrcode/decoder.js"></script>
+    <script type="text/javascript" src="js/qrcode/qrcode.js"></script>
+    <script type="text/javascript" src="js/qrcode/findpat.js"></script>
+    <script type="text/javascript" src="js/qrcode/alignpat.js"></script>
+    <script type="text/javascript" src="js/qrcode/databr.js"></script>
+
+    <script type="text/javascript" src="js/xlsx/xlsx.full.min.js"></script>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
